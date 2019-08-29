@@ -14,22 +14,23 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-const GameScreen = (props) => {
+const GameScreen = ({ onGameover, userChoice }) => {
   const [currentGuess, setCurrentGuess] = useState(
-    generateRandomBetween(1, 100, props.userChoice)
+    generateRandomBetween(1, 100, userChoice)
   );
+  const [rounds, setRounds] = useState(0);
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
   useEffect(() => {
-    if (currentGuess === props.userChoice) {
-
+    if (currentGuess === userChoice) {
+      onGameover(rounds);
     }
-  });
+  }, [currentGuess, onGameover, userChoice]);
 
   const nextGuesssHandler = (direction) => {
-    if ((direction === "lower" && currentGuess < props.userChoice) ||
-      (direction === "greater" && currentGuess > props.userChoice)) {
+    if ((direction === "lower" && currentGuess < userChoice) ||
+      (direction === "greater" && currentGuess > userChoice)) {
       Alert.alert("You checting fuck", "You know that is wrong",
         [{ text: "Sorry!", style: "cancel" }]);
       console.log("lie");
@@ -42,6 +43,7 @@ const GameScreen = (props) => {
     }
     const nextNumber = generateRandomBetween(currentLow.current, currentHigh.current, currentGuess);
     setCurrentGuess(nextNumber);
+    setRounds((currentRounds) => currentRounds + 1);
   }
 
   return (
