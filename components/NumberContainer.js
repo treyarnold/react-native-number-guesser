@@ -8,7 +8,7 @@ const NumberContainer = (props) => {
     <View style={styles.container}>
       <Text style={styles.number}>{props.children}</Text>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({

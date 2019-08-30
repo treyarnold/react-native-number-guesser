@@ -4,12 +4,11 @@ import { View, StyleSheet } from "react-native";
 const Card = (props) => {
   return (
     <View style={{ ...styles.card, ...props.style }}>{props.children}</View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
   card: {
-    // IOS shadows
     shadowColor: "black",
     shadowOffset: {
       width: 0,
@@ -17,7 +16,6 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 6,
     shadowOpacity: 0.26,
-    // Android shadow
     elevation: 5,
     backgroundColor: "white",
     padding: 20,

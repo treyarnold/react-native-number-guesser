@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, Text, StyleSheet, Button, Alert } from "react-native";
+
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
+import DefaultStyles from "../constants/default-styles";
 
 const generateRandomBetween = (min, max, exclude) => {
   min = Math.ceil(min);
@@ -14,7 +16,7 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-const GameScreen = ({ onGameover, userChoice }) => {
+const GameScreen = ({ onGameOver, userChoice }) => {
   const [currentGuess, setCurrentGuess] = useState(
     generateRandomBetween(1, 100, userChoice)
   );
@@ -24,16 +26,17 @@ const GameScreen = ({ onGameover, userChoice }) => {
 
   useEffect(() => {
     if (currentGuess === userChoice) {
-      onGameover(rounds);
+      onGameOver(rounds);
     }
-  }, [currentGuess, onGameover, userChoice]);
+  }, [currentGuess, userChoice, onGameOver]);
 
-  const nextGuesssHandler = (direction) => {
-    if ((direction === "lower" && currentGuess < userChoice) ||
-      (direction === "greater" && currentGuess > userChoice)) {
+  const nextGuessHandler = (direction) => {
+    if (
+      (direction === "lower" && currentGuess < userChoice) ||
+      (direction === "greater" && currentGuess > userChoice)
+    ) {
       Alert.alert("You checting fuck", "You know that is wrong",
         [{ text: "Sorry!", style: "cancel" }]);
-      console.log("lie");
       return;
     }
     if (direction === "lower") {
@@ -41,21 +44,25 @@ const GameScreen = ({ onGameover, userChoice }) => {
     } else {
       currentLow.current = currentGuess;
     }
-    const nextNumber = generateRandomBetween(currentLow.current, currentHigh.current, currentGuess);
+    const nextNumber = generateRandomBetween(
+      currentLow.current,
+      currentHigh.current,
+      currentGuess
+    );
     setCurrentGuess(nextNumber);
     setRounds((currentRounds) => currentRounds + 1);
-  }
+  };
 
   return (
     <View style={styles.screen}>
-      <Text>Opponent's Guess</Text>
+      <Text style={DefaultStyles.title}>Opponent's Guess</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card style={styles.buttonContainer}>
         <Button title="LOWER" onPress={() => { nextGuesssHandler("lower") }} />
         <Button title="GREATER" onPress={() => { nextGuesssHandler("greater") }} />
       </Card>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
